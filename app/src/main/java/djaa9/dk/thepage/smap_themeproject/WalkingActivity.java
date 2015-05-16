@@ -1,9 +1,9 @@
 package djaa9.dk.thepage.smap_themeproject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,23 +11,17 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.internal.IPolylineDelegate;
-
-import java.util.List;
 
 
 public class WalkingActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback{
     private LocationManager _locationManager;
     private GoogleMap _map;
-    private List<LatLng> _route;
     private PolylineOptions _polylineOptions;
 
     @Override
@@ -37,10 +31,16 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
 
         ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
 
+        LocationRequest request = new LocationRequest();
+
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
         _locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        _locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        //_route = new List<>();
+        Criteria crit = new Criteria();
+        crit.setAccuracy(Criteria.ACCURACY_FINE);
+
+        _locationManager.requestLocationUpdates(_locationManager.getBestProvider(crit, true), 500,  0, this);
 
          _polylineOptions = new PolylineOptions()
                 .color(Color.RED)
@@ -54,13 +54,11 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         Intent intent = new Intent(this, WalkDoneActivity.class);
 
         startActivity(intent);
-        //_locationManager.removeUpdates();
+        _locationManager.removeUpdates(this);
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        //_route.add(new LatLng(location.getLatitude(), location.getLongitude()));
-
         _polylineOptions.add(new LatLng(location.getLatitude(), location.getLongitude()));
 
         _map.addPolyline(_polylineOptions);
