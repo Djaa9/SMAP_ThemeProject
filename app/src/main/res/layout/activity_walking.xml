@@ -30,7 +30,7 @@
         android:background="@drawable/walking_top_menu_bg"/>
 
     <TextView
-        android:text="2,45"
+        android:text="0.00"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
@@ -52,11 +52,12 @@
         android:layout_toEndOf="@+id/txv_distance" />
 
     <TextView
-        android:text="1,68"
+        android:text="0.00"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignTop="@+id/txv_distance"
         android:layout_toLeftOf="@+id/txv_money_collected_unit"
+        android:id="@+id/txv_money_collected"
         android:textSize="40dp"
         android:padding="0dp"
         android:includeFontPadding="false"/>

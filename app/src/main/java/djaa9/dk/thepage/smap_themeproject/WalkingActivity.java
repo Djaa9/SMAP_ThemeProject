@@ -10,37 +10,57 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
-
 
 public class WalkingActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback{
     private LocationManager _locationManager;
     private GoogleMap _map;
     private PolylineOptions _polylineOptions;
+    private LatLngBounds.Builder _boundsBuilder;
+    private Criteria _crit;
+
+    private TextView _distanceTextView;
+    private TextView _moneyAmountTextView;
+
+    private Location _previousLocation;
+    private double _totalDistance;
+    private double minimumMapWidth;
+    private double minimumMapHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
 
+        _distanceTextView = (TextView) findViewById(R.id.txv_distance);
+        _moneyAmountTextView = (TextView) findViewById(R.id.txv_money_collected);
+
+        _totalDistance = 0;
+
         ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
 
         LocationRequest request = new LocationRequest();
+
+        _boundsBuilder = new LatLngBounds.Builder();
 
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         _locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        Criteria crit = new Criteria();
-        crit.setAccuracy(Criteria.ACCURACY_FINE);
+        _crit = new Criteria();
+        _crit.setAccuracy(Criteria.ACCURACY_FINE);
 
-        _locationManager.requestLocationUpdates(_locationManager.getBestProvider(crit, true), 500,  0, this);
+
 
          _polylineOptions = new PolylineOptions()
                 .color(Color.RED)
@@ -61,11 +81,16 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
     public void onLocationChanged(Location location) {
         _polylineOptions.add(new LatLng(location.getLatitude(), location.getLongitude()));
 
+        updateTotalDistance(location);
+        updateDonationAmount();
+        updateMapCamera(location);
+
         _map.addPolyline(_polylineOptions);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+
 
     }
 
@@ -83,7 +108,86 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
     public void onMapReady(GoogleMap googleMap) {
         _map = googleMap;
         _map.setMyLocationEnabled(true);
-
+        _map.getUiSettings().setAllGesturesEnabled(false);
+        _map.getUiSettings().setMyLocationButtonEnabled(false);
         _map.addPolyline(_polylineOptions);
+
+        Location lastKnownLocation = _locationManager.getLastKnownLocation(_locationManager.getBestProvider(_crit, false));
+
+        if (lastKnownLocation != null){
+            _map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 17));
+
+            Location ne = new Location("");
+            ne.setLatitude(_map.getProjection().getVisibleRegion().latLngBounds.northeast.latitude);
+            ne.setLongitude(_map.getProjection().getVisibleRegion().latLngBounds.northeast.longitude);
+
+            Location sw = new Location("");
+            sw.setLatitude(_map.getProjection().getVisibleRegion().latLngBounds.southwest.latitude);
+            sw.setLongitude(_map.getProjection().getVisibleRegion().latLngBounds.southwest.longitude);
+
+            Location nw = new Location("");
+            nw.setLatitude(_map.getProjection().getVisibleRegion().latLngBounds.northeast.latitude);
+            nw.setLongitude(_map.getProjection().getVisibleRegion().latLngBounds.southwest.longitude);
+
+            Location se = new Location("");
+            se.setLatitude(_map.getProjection().getVisibleRegion().latLngBounds.southwest.latitude);
+            se.setLongitude(_map.getProjection().getVisibleRegion().latLngBounds.northeast.longitude);
+
+            minimumMapWidth = ne.distanceTo(nw);
+            minimumMapHeight = se.distanceTo(ne);
+
+            _locationManager.requestLocationUpdates(_locationManager.getBestProvider(_crit, true), 3*1000,  10, this);
+            }
+    }
+
+    private void updateTotalDistance(Location newLocation) {
+        if (_previousLocation == null ){
+            _previousLocation = newLocation;
+            _distanceTextView.setText("0,00");
+            return;
+        }
+
+        _totalDistance += _previousLocation.distanceTo(newLocation)/1000;
+        _previousLocation = newLocation;
+
+        _distanceTextView.setText(String.format("%.2f", _totalDistance));
+
+    }
+
+    private void updateDonationAmount(){
+         double donationAmount = _totalDistance*10;
+        _moneyAmountTextView.setText(String.format("%.2f", donationAmount));
+    }
+
+    private void updateMapCamera(Location location) {
+
+        _boundsBuilder.include(new LatLng(location.getLatitude(), location.getLongitude()));
+
+        LatLngBounds bounds = _boundsBuilder.build();
+
+        Location ne = new Location("");
+        ne.setLatitude(bounds.northeast.latitude);
+        ne.setLongitude(bounds.northeast.longitude);
+
+        Location sw = new Location("");
+        sw.setLatitude(bounds.southwest.latitude);
+        sw.setLongitude(bounds.southwest.longitude);
+
+        Location nw = new Location("");
+        nw.setLatitude(bounds.northeast.latitude);
+        nw.setLongitude(bounds.southwest.longitude);
+
+        Location se = new Location("");
+        se.setLatitude(bounds.southwest.latitude);
+        se.setLongitude(bounds.northeast.longitude);
+
+        if (minimumMapHeight < ne.distanceTo(se) || minimumMapWidth < se.distanceTo(sw)) {
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+            _map.animateCamera(cameraUpdate, 1000, null);
+        }
+        else{
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(bounds.getCenter());
+            _map.animateCamera(cameraUpdate, 1000, null);
+        }
     }
 }
