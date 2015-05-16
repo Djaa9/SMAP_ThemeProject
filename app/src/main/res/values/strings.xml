@@ -11,7 +11,7 @@
     <string name="IntroActivity_hello">Dette er Intro Viewet</string>
     <string name="walking_hello">Dette er Walking Viewet</string>
     <string name="walkDone_hello">Dette er WalkingDone Viewet</string>
-    <string name="btn_text_stopWalking">Done</string>
+    <string name="btn_text_stopWalking">Færdig</string>
 
     <string name="google_maps_key">AIzaSyBb9tlg0wZQycFLAquPgHUrD35AEV8TGjY</string>
 </resources>

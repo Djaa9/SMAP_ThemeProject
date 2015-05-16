@@ -1,30 +1,74 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context="djaa9.dk.thepage.smap_themeproject.WalkingActivity">
-
-    <!--<TextView android:text="@string/walking_hello" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />-->
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.google.android.gms.maps.MapFragment"/>
+        android:layout_height="match_parent"/>
 
     <Button
+        android:id="@+id/btn_stop_walking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="0dp"
+        android:background="#9938ff39"
+        android:onClick="StopWalking"
+        android:padding="0dp"
+        android:text="@string/btn_text_stopWalking"
+        android:textColor="#ffffffff"
+        android:textSize="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/walking_top_menu_bg"/>
+
+    <TextView
+        android:text="2,45"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="24dp"
+        android:textSize="40dp"
+        android:padding="0dp"
+        android:id="@+id/txv_distance"
+        android:includeFontPadding="false"/>
+    <TextView
+        android:text="km"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_text_stopWalking"
-        android:id="@+id/button3"
-        android:onClick="StopWalking"
-        android:layout_alignParentBottom="true"
+        android:textSize="16dp"
+        android:padding="0dp"
+        android:layout_alignBottom="@+id/txv_distance"
+        android:layout_toRightOf="@+id/txv_distance"
+        android:layout_toEndOf="@+id/txv_distance" />
+
+    <TextView
+        android:text="1,68"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/txv_distance"
+        android:layout_toLeftOf="@+id/txv_money_collected_unit"
+        android:textSize="40dp"
+        android:padding="0dp"
+        android:includeFontPadding="false"/>
+    <TextView
+        android:text="kr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:textSize="16dp"
+        android:padding="0dp"
+        android:id="@+id/txv_money_collected_unit"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
+        android:layout_alignBottom="@+id/txv_distance" />
 
 </RelativeLayout>
