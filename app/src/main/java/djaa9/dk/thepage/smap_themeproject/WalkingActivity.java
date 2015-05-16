@@ -7,18 +7,28 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class WalkingActivity extends Activity implements LocationListener{
+
+public class WalkingActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback{
     private LocationManager _locationManager;
+    private GoogleMap _map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
 
+        ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
         _locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
         _locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
         //_locationManager.s
@@ -29,11 +39,17 @@ public class WalkingActivity extends Activity implements LocationListener{
         Intent intent = new Intent(this, WalkDoneActivity.class);
 
         startActivity(intent);
+        //_locationManager.removeUpdates();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        int ff = 1+1;
+
+
+        _map.addMarker(new MarkerOptions()
+                .title("")
+                .snippet("")
+                .position(new LatLng(location.getLatitude(), location.getLongitude())));
     }
 
     @Override
@@ -49,5 +65,10 @@ public class WalkingActivity extends Activity implements LocationListener{
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+    _map = googleMap;
     }
 }
