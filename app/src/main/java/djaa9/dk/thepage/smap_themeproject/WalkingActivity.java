@@ -20,7 +20,10 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.List;
 
 public class WalkingActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback{
     private LocationManager _locationManager;
@@ -28,14 +31,17 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
     private PolylineOptions _polylineOptions;
     private LatLngBounds.Builder _boundsBuilder;
     private Criteria _crit;
+    private Location _previousLocation;
+
+    private double _totalDistance;
+    private double _donationAmount;
+    private double minimumMapWidth;
+    private double minimumMapHeight;
+    private String _routeMapUrl;
 
     private TextView _distanceTextView;
     private TextView _moneyAmountTextView;
-
-    private Location _previousLocation;
-    private double _totalDistance;
-    private double minimumMapWidth;
-    private double minimumMapHeight;
+    private Polyline _polyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +52,11 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         _moneyAmountTextView = (TextView) findViewById(R.id.txv_money_collected);
 
         _totalDistance = 0;
+        _donationAmount = 0;
 
         ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
 
         LocationRequest request = new LocationRequest();
-
         _boundsBuilder = new LatLngBounds.Builder();
 
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -60,21 +66,11 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         _crit = new Criteria();
         _crit.setAccuracy(Criteria.ACCURACY_FINE);
 
-
-
          _polylineOptions = new PolylineOptions()
                 .color(Color.RED)
                 .geodesic(true)
                 .visible(true)
                 .width(10);
-
-    }
-
-    public void StopWalking(View view) {
-        Intent intent = new Intent(this, WalkDoneActivity.class);
-
-        startActivity(intent);
-        _locationManager.removeUpdates(this);
     }
 
     @Override
@@ -85,23 +81,19 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         updateDonationAmount();
         updateMapCamera(location);
 
-        _map.addPolyline(_polylineOptions);
+        _polyline = _map.addPolyline(_polylineOptions);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
-
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
     }
 
     @Override
@@ -110,7 +102,8 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         _map.setMyLocationEnabled(true);
         _map.getUiSettings().setAllGesturesEnabled(false);
         _map.getUiSettings().setMyLocationButtonEnabled(false);
-        _map.addPolyline(_polylineOptions);
+
+        _polyline = _map.addPolyline(_polylineOptions);
 
         Location lastKnownLocation = _locationManager.getLastKnownLocation(_locationManager.getBestProvider(_crit, false));
 
@@ -151,12 +144,11 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         _previousLocation = newLocation;
 
         _distanceTextView.setText(String.format("%.2f", _totalDistance));
-
     }
 
     private void updateDonationAmount(){
-         double donationAmount = _totalDistance*10;
-        _moneyAmountTextView.setText(String.format("%.2f", donationAmount));
+         _donationAmount = _totalDistance*10;
+        _moneyAmountTextView.setText(String.format("%.2f", _donationAmount));
     }
 
     private void updateMapCamera(Location location) {
@@ -190,4 +182,39 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
             _map.animateCamera(cameraUpdate, 1000, null);
         }
     }
+
+    public void StopWalking(View view) {
+        _routeMapUrl = createStaticMap();
+
+
+
+        Intent intent = new Intent(this, WalkDoneActivity.class);
+        intent.putExtra(getPackageName() + ".DISTANCE_TRAVELED", _totalDistance)
+                .putExtra(getPackageName() + ".DONATION_AMOUNT", _donationAmount)
+                .putExtra(getPackageName() + "ROUTE_MAP_URL", _routeMapUrl);
+
+        startActivity(intent);
+        _locationManager.removeUpdates(this);
+    }
+
+    private String createStaticMap() {
+
+        String url = "https://maps.googleapis.com/maps/api/staticmap?";
+
+        // size
+        url = url + "size=600x600";
+
+        //path setup
+        url = url + "&path=color:0xff0000|weight:5"; //
+
+        List<LatLng> test = _polyline.getPoints();
+
+        // add LatLng to path
+        for (LatLng coordinate : _polyline.getPoints()){
+            url = url + "|" + coordinate.latitude + "," + coordinate.longitude;
+        }
+
+            return url;
+    }
+
 }
