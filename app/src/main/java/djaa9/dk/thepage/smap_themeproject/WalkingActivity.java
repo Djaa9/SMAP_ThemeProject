@@ -23,8 +23,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.List;
-
 public class WalkingActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback{
     private LocationManager _locationManager;
     private GoogleMap _map;
@@ -37,7 +35,6 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
     private double _donationAmount;
     private double minimumMapWidth;
     private double minimumMapHeight;
-    private String _routeMapUrl;
 
     private TextView _distanceTextView;
     private TextView _moneyAmountTextView;
@@ -133,6 +130,18 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
             }
     }
 
+    // Called when the user indicated that he is done walking
+    public void StopWalking(View view) {
+        Intent intent = new Intent(this, WalkDoneActivity.class);
+        intent.putExtra(getPackageName() + ".DISTANCE_TRAVELED", _totalDistance)
+                .putExtra(getPackageName() + ".DONATION_AMOUNT", _donationAmount)
+                .putExtra(getPackageName() + "ROUTE_MAP_URL", createStaticMapUrl());
+
+        startActivity(intent);
+        _locationManager.removeUpdates(this);
+    }
+
+    // Updates _totalDistance, with the cumulated distance the user have walked
     private void updateTotalDistance(Location newLocation) {
         if (_previousLocation == null ){
             _previousLocation = newLocation;
@@ -183,22 +192,9 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         }
     }
 
-    public void StopWalking(View view) {
-        _routeMapUrl = createStaticMap();
+    private String createStaticMapUrl() {
 
-
-
-        Intent intent = new Intent(this, WalkDoneActivity.class);
-        intent.putExtra(getPackageName() + ".DISTANCE_TRAVELED", _totalDistance)
-                .putExtra(getPackageName() + ".DONATION_AMOUNT", _donationAmount)
-                .putExtra(getPackageName() + "ROUTE_MAP_URL", _routeMapUrl);
-
-        startActivity(intent);
-        _locationManager.removeUpdates(this);
-    }
-
-    private String createStaticMap() {
-
+        // API URL
         String url = "https://maps.googleapis.com/maps/api/staticmap?";
 
         // size
@@ -207,14 +203,10 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         //path setup
         url = url + "&path=color:0xff0000|weight:5"; //
 
-        List<LatLng> test = _polyline.getPoints();
-
         // add LatLng to path
         for (LatLng coordinate : _polyline.getPoints()){
             url = url + "|" + coordinate.latitude + "," + coordinate.longitude;
         }
-
             return url;
     }
-
 }

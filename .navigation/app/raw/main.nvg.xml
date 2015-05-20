@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigationModel
+  ns = "http://schemas.android.com?import=com.android.tools.idea.editors.navigation.model.*">
+  <locations  
+    class = "java.util.ArrayList">
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "djaa9.dk.thepage.smap_themeproject.LoginActivity"/>
+      <point      
+        x = "-80"      
+        y = "484"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "djaa9.dk.thepage.smap_themeproject.WalkDoneActivity"/>
+      <point      
+        x = "936"      
+        y = "556"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "djaa9.dk.thepage.smap_themeproject.WalkingActivity"/>
+      <point      
+        x = "1784"      
+        y = "440"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "djaa9.dk.thepage.smap_themeproject.IntroActivity"/>
+      <point      
+        x = "2632"      
+        y = "528"/>
+    </statePointEntry>
+  </locations>
+</navigationModel>
