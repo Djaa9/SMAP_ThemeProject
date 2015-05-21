@@ -6,16 +6,21 @@
 
 package com.example.Johnny.myapplication.backend;
 
+
+
+
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-
-import javax.inject.Named;
-
-import java.io.*;
-import java.sql.*;
-import javax.servlet.http.*;
+import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.utils.SystemProperty;
+
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * An endpoint class we are exposing
@@ -31,6 +36,13 @@ public class MyEndpoint {
         MyBean response = new MyBean();
         response.setData("Hi, " + name);
 
+        insertWalk();
+
+        return response;
+    }
+
+    private void insertWalk() throws ClassNotFoundException, SQLException {
+
         String url = null;
         if (SystemProperty.environment.value() ==
                 SystemProperty.Environment.Value.Production) {
@@ -39,7 +51,7 @@ public class MyEndpoint {
             // prefix.
             Class.forName("com.mysql.jdbc.GoogleDriver");
             url =
-                    "jdbc:google:mysql://articulate-fort-94709:nebuchadnezzar01?user=root";
+                    "jdbc:google:mysql://articulate-fort-94709:nebuchadnezzar?user=root";
         } else {
             // Connecting from an external network.
             Class.forName("com.mysql.jdbc.Driver");
@@ -49,12 +61,8 @@ public class MyEndpoint {
 
         Connection conn = DriverManager.getConnection(url);
         ResultSet rs = conn.createStatement().executeQuery(
-                "SELECT * FROM walksTable;");
+                "INSERT INTO walksTable (fbID, length) VALUES (1448625556,2500.25);");
 
-
-
-
-        return response;
     }
 
 
