@@ -14,4 +14,7 @@
     <string name="btn_text_stopWalking">Færdig</string>
 
     <string name="google_maps_key">AIzaSyBb9tlg0wZQycFLAquPgHUrD35AEV8TGjY</string>
+    <string name="facebook_app_id">100159500322636</string>
+    <string name="facebook_share_title">Jeg har gået imod kræft!</string>
+    <string name="facebook_share_link">http://cancer4ever.dk</string>
 </resources>
