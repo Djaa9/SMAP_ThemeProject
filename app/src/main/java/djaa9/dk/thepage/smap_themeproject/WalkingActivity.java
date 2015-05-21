@@ -137,7 +137,7 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         Intent intent = new Intent(this, WalkDoneActivity.class);
         intent.putExtra(getPackageName() + ".DISTANCE_TRAVELED", _totalDistance)
                 .putExtra(getPackageName() + ".DONATION_AMOUNT", _donationAmount)
-                .putExtra(getPackageName() + "ROUTE_MAP_URL", _toStatic.createStaticMapUrl(_polyline));
+                .putExtra(getPackageName() + ".ROUTE_MAP_URL", _toStatic.createStaticMapUrl(_polyline));
 
         startActivity(intent);
         _locationManager.removeUpdates(this);
