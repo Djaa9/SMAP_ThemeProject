@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
@@ -142,8 +143,13 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         startActivity(intent);
         _locationManager.removeUpdates(this);
 
+<<<<<<< HEAD
         //Remove current activity from the stack
         finish();
+=======
+        // Communicate with sql
+        new EndpointsAsyncTask().execute(new Pair<Context, String>(this, "AWESOME"));
+>>>>>>> 39e8f556025983030cfa31c4192d408bdec775ae
     }
 
     // Updates _totalDistance, with the cumulated distance the user have walked
