@@ -143,13 +143,11 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         startActivity(intent);
         _locationManager.removeUpdates(this);
 
-<<<<<<< HEAD
-        //Remove current activity from the stack
-        finish();
-=======
         // Communicate with sql
         new EndpointsAsyncTask().execute(new Pair<Context, String>(this, "AWESOME"));
->>>>>>> 39e8f556025983030cfa31c4192d408bdec775ae
+
+        //Remove current activity from the stack
+        finish();
     }
 
     // Updates _totalDistance, with the cumulated distance the user have walked
