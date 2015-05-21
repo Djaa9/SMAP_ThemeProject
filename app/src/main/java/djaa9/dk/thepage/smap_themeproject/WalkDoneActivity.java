@@ -62,8 +62,8 @@ public class WalkDoneActivity extends Activity {
 
         //Get data from walk session from intent
         Bundle extras = getIntent().getExtras();
-        distanceTraveled = String.valueOf(extras.getDouble(getPackageName() + ".DISTANCE_TRAVELED"));
-        donationAmount = String.valueOf(extras.getDouble(getPackageName() + ".DONATION_AMOUNT"));
+        distanceTraveled = String.format("%.2f", extras.getDouble(getPackageName() + ".DISTANCE_TRAVELED"));
+        donationAmount = String.format("%.2f", extras.getDouble(getPackageName() + ".DONATION_AMOUNT"));
         routeMapUrl = extras.getString(getPackageName() + ".ROUTE_MAP_URL");
 
         //Get current Profile

@@ -141,6 +141,9 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
 
         startActivity(intent);
         _locationManager.removeUpdates(this);
+
+        //Remove current activity from the stack
+        finish();
     }
 
     // Updates _totalDistance, with the cumulated distance the user have walked
