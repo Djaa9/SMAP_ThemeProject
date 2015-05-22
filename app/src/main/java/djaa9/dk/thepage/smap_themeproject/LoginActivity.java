@@ -22,21 +22,13 @@ public class LoginActivity extends Activity {
     private FacebookCallback<LoginResult> facebookLoginCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-
-            //Successfully logged in
-            Profile profile = Profile.getCurrentProfile();
-
-            if (profile != null){
-                //Do stuff
-                NavigateToNext(findViewById(R.id.login_button));
-            }
-
+            //Go to introActivity when logged in succesfully
+            NavigateToNext(findViewById(R.id.login_button));
         }
 
         @Override
         public void onCancel() {
             //Currently not handled
-
         }
 
         @Override
@@ -65,9 +57,8 @@ public class LoginActivity extends Activity {
 
         //Check if user is already logged in
         Profile profile = Profile.getCurrentProfile();
-
         if (profile != null){
-            //Do stuff
+            //Automaticly open the intro activity if already logged in
             NavigateToNext(findViewById(R.id.login_button));
         }
 

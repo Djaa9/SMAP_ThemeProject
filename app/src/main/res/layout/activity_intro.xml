@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/walk_message"
-        android:text="Begynd din gåtur nedenfor og hjælp forskningen mod kræft!"
+        android:text="@string/intro_explanation"
         android:gravity="center"
         android:layout_marginBottom="49dp"
         android:layout_above="@+id/start_button"
@@ -27,5 +27,18 @@
         android:textSize="20dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" android:onClick="StartWalk"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Velkommen"
+        android:id="@+id/welcome_message"
+        android:gravity="center"
+        android:layout_above="@+id/walk_message"
+        android:layout_alignRight="@+id/walk_message"
+        android:layout_alignEnd="@+id/walk_message"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 This java class application is only used to get the unique hash key of the app, as this key is
 required to be entered to the facebook developer page of the app.
 This application is only used during development and is removed from the manifest in the final app.
+All code here is taken directly from https://developers.facebook.com/docs/android.
  */
 public class GetHashApplication extends Application{
     @Override
