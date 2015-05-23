@@ -19,6 +19,7 @@ public class LoginActivity extends Activity {
 
     private CallbackManager facebookCallbackManager;
 
+    //Handle callback from facebook login.
     private FacebookCallback<LoginResult> facebookLoginCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -72,8 +73,8 @@ public class LoginActivity extends Activity {
     }
 
     public void NavigateToNext(View view) {
+        //Start next activity
         Intent intent = new Intent(this, IntroActivity.class);
-
         startActivity(intent);
     }
 }
