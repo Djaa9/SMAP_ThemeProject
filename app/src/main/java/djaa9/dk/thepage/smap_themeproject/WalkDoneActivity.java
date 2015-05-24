@@ -68,18 +68,14 @@ public class WalkDoneActivity extends Activity {
         donationAmount = String.format("%.2f", extras.getDouble(getPackageName() + ".DONATION_AMOUNT"));
         routeMapUrl = extras.getString(getPackageName() + ".ROUTE_MAP_URL");
 
-        //Get current Profile
-        Profile profile = getCurrentProfile();
-
-        //Save walk stats to the database
-        SaveWalk(profile);
+        //Get current facebook profile
+        Profile profile = Profile.getCurrentProfile();
 
         //Set on screen message based on the data from the walk
         TextView walkMessage = (TextView) findViewById(R.id.walk_message);
         walkMessage.setText("Flot klaret " + profile.getFirstName() + "! Din tur har bidraget med " + donationAmount +
                 " kroner til forskning mod kræft!");
-
-
+        
         //Set map image to map from url (uses another thread (task))
         LoadMapFromUrlTask loadMapFromUrlTask = new LoadMapFromUrlTask();
         loadMapFromUrlTask.execute();
@@ -138,16 +134,6 @@ public class WalkDoneActivity extends Activity {
             //Open facebook share diaglog based on the created content
             facebookShareDialog.show(linkContent);
         }
-    };
-
-    public Profile getCurrentProfile(){
-        //Get current facebook profile
-        return Profile.getCurrentProfile();
-    };
-
-    public void SaveWalk(Profile profile){
-        //Save data with data with: profile.getId(); distanceTraveled; donationAmount;
-        //ToDo!
     };
 
     public void EndActivity(View v){
