@@ -75,7 +75,7 @@ public class WalkDoneActivity extends Activity {
         TextView walkMessage = (TextView) findViewById(R.id.walk_message);
         walkMessage.setText("Flot klaret " + profile.getFirstName() + "! Din tur har bidraget med " + donationAmount +
                 " kroner til forskning mod kræft!");
-        
+
         //Set map image to map from url (uses another thread (task))
         LoadMapFromUrlTask loadMapFromUrlTask = new LoadMapFromUrlTask();
         loadMapFromUrlTask.execute();

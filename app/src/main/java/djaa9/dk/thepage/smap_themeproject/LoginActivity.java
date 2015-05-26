@@ -3,7 +3,6 @@ package djaa9.dk.thepage.smap_themeproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -24,7 +23,7 @@ public class LoginActivity extends Activity {
         @Override
         public void onSuccess(LoginResult loginResult) {
             //Go to introActivity when logged in succesfully
-            NavigateToNext(findViewById(R.id.login_button));
+            NavigateToNext();
         }
 
         @Override
@@ -60,7 +59,7 @@ public class LoginActivity extends Activity {
         Profile profile = Profile.getCurrentProfile();
         if (profile != null){
             //Automaticly open the intro activity if already logged in
-            NavigateToNext(findViewById(R.id.login_button));
+            NavigateToNext();
         }
 
     }
@@ -72,7 +71,7 @@ public class LoginActivity extends Activity {
         facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void NavigateToNext(View view) {
+    public void NavigateToNext() {
         //Start next activity
         Intent intent = new Intent(this, IntroActivity.class);
         startActivity(intent);
