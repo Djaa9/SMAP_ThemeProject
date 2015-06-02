@@ -15,8 +15,11 @@
 
     <string name="google_maps_key">AIzaSyBb9tlg0wZQycFLAquPgHUrD35AEV8TGjY</string>
     <string name="facebook_app_id">100159500322636</string>
+
     <string name="facebook_share_title">Jeg har gået imod kræft!</string>
-    <string name="facebook_share_link">http://cancer4ever.dk</string>
-    <string name="login_message">Log ind med din facebookprofil</string>
+    <string name="facebook_share_link">http://inmysteps.dk</string>
     <string name="intro_explanation">Begynd din gåtur nedenfor og hjælp forskningen mod kræft!</string>
+
+    <string name="login_message">Log ind med din facebookprofil</string>
+    <string name="loggedin_message">Du er logget ind som</string>
 </resources>

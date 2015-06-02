@@ -25,8 +25,8 @@ public class IntroActivity extends Activity {
     }
 
     public void StartWalk(View view) {
+        //Start new activity
         Intent intent = new Intent(this, WalkingActivity.class);
-
         startActivity(intent);
     }
 }

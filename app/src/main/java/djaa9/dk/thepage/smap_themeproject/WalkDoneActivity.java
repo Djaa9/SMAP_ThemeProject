@@ -33,10 +33,12 @@ public class WalkDoneActivity extends Activity {
     private String donationAmount;
     private String routeMapUrl;
 
+    //Handle callback from facebook share.
     private FacebookCallback<Sharer.Result> facebookShareCallback = new FacebookCallback<Sharer.Result>() {
         @Override
         public void onSuccess(Sharer.Result result) {
-            //Successfully shared - currently not handled
+            //Successfully shared - Close this activity to go back to IntroActivity.
+            finish();
         }
 
         @Override
@@ -66,38 +68,35 @@ public class WalkDoneActivity extends Activity {
         donationAmount = String.format("%.2f", extras.getDouble(getPackageName() + ".DONATION_AMOUNT"));
         routeMapUrl = extras.getString(getPackageName() + ".ROUTE_MAP_URL");
 
-        //Get current Profile
-        Profile profile = getCurrentProfile();
-
-        //Save walk stats to the database
-        SaveWalk(profile);
+        //Get current facebook profile
+        Profile profile = Profile.getCurrentProfile();
 
         //Set on screen message based on the data from the walk
         TextView walkMessage = (TextView) findViewById(R.id.walk_message);
         walkMessage.setText("Flot klaret " + profile.getFirstName() + "! Din tur har bidraget med " + donationAmount +
                 " kroner til forskning mod kræft!");
 
-
-        //Set map image to map from url (uses another thread)
+        //Set map image to map from url (uses another thread (task))
         LoadMapFromUrlTask loadMapFromUrlTask = new LoadMapFromUrlTask();
         loadMapFromUrlTask.execute();
 
         //Initialize callback manager for facebook share functionality
         facebookCallbackManager = CallbackManager.Factory.create();
 
-        //Handle share dialog
+        //Create share dialog and register callback funtion
         facebookShareDialog = new ShareDialog(this);
         facebookShareDialog.registerCallback(facebookCallbackManager, facebookShareCallback);
 
     }
 
+    //Async task to load image as Drawable from an URL.
+    // This must use an AsyncTask because network stream can't behandled on the main thread (prevents lag).
     private class LoadMapFromUrlTask extends AsyncTask<String, Void, Drawable> {
 
-
+        //Called when execute is called on the async task. (Runs on another thread)
         @Override
         protected Drawable doInBackground(String... params) {
             try {
-                //(Runs on another thread)
                 //Get image from url.
                 InputStream stream = (InputStream) new URL(routeMapUrl).getContent();
                 Drawable mapDrawable = Drawable.createFromStream(stream, "src");
@@ -108,10 +107,10 @@ public class WalkDoneActivity extends Activity {
             }
         }
 
+        //Called when the doInBackground returns (Runs on main thread)
         @Override
         protected void onPostExecute(Drawable drawable) {
             super.onPostExecute(drawable);
-            //(Runs on main thread)
             //Find ImageView and let it show the map
             ImageView mapImage = (ImageView) findViewById(R.id.map_image);
             mapImage.setImageDrawable(drawable);
@@ -119,7 +118,7 @@ public class WalkDoneActivity extends Activity {
     }
 
     public void ShareContent(View v){
-
+        //Create share content for the facebook share - uses text, link and an image from URL.
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(getString(R.string.facebook_share_title))
@@ -132,18 +131,14 @@ public class WalkDoneActivity extends Activity {
                     .setContentUrl(Uri.parse(getString(R.string.facebook_share_link)))
                     .build();
 
+            //Open facebook share diaglog based on the created content
             facebookShareDialog.show(linkContent);
         }
     };
 
-    public Profile getCurrentProfile(){
-
-        //Get current facebook profile
-        return Profile.getCurrentProfile();
-    };
-
-    public void SaveWalk(Profile profile){
-        //Save data with data with: profile.getId(); distanceTraveled; donationAmount;
+    public void EndActivity(View v){
+        //Close this activity
+        finish();
     };
 
     @Override
