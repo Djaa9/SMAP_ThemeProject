@@ -142,7 +142,7 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         _locationManager.removeUpdates(this);
 
         // Communicate with sql
-        new EndpointsAsyncTask().execute(new Pair<Context, String>(this, "AWESOME"));
+        //new EndpointsAsyncTask().execute(new Pair<Context, String>(this, "AWESOME"));
 
         //Remove current activity from the stack
         finish();

@@ -17,8 +17,10 @@ public class DynamicToStatic {
         url = url + "&path=color:0xff0000|weight:5"; //
 
         // add LatLng to path
-        for (LatLng coordinate : polyline.getPoints()){
-            url = url + "|" + coordinate.latitude + "," + coordinate.longitude;
+        if (polyline != null) {
+            for (LatLng coordinate : polyline.getPoints()) {
+                url = url + "|" + coordinate.latitude + "," + coordinate.longitude;
+            }
         }
         return url;
     }
