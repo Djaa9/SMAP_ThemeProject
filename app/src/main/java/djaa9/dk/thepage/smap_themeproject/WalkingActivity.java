@@ -67,14 +67,14 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         _donationAmount = 0;
         _firstLocation = true;
 
-        // Setup MapFragment - Throws Event OnMapReady when done
-        ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
-
         // Setup  Priority of LocationRequests
         (new LocationRequest()).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         // Setup LocationManager
         _locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // Setup MapFragment - Throws Event OnMapReady when done
+        ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
     }
 
     /* Called when the Google map is ready for use */
@@ -85,8 +85,6 @@ public class WalkingActivity extends FragmentActivity implements LocationListene
         _map.setMyLocationEnabled(true);
         _map.getUiSettings().setAllGesturesEnabled(false);
         _map.getUiSettings().setMyLocationButtonEnabled(false);
-
-        _polyline = _map.addPolyline(_polylineOptions); // Delete?
 
         // Setup LocationManager and Request onLocationChanged events
         Criteria criteria = new Criteria();
