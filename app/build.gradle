@@ -10,7 +10,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "djaa9.dk.thepage.smap_themeproject"
+        applicationId "djaa9.dk.thepage.InMySteps_201270097"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1

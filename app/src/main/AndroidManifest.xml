@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="djaa9.dk.thepage.smap_themeproject" >
+    package="djaa9.dk.thepage.InMySteps_201270097" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -17,7 +17,7 @@
         android:required="true" />
 
     <application
-        android:name=".GetHashApplication"
+        android:name="djaa9.dk.thepage.InMySteps_201270097.GetHashApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,7 +34,7 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
         <activity
-            android:name=".LoginActivity"
+            android:name="djaa9.dk.thepage.InMySteps_201270097.LoginActivity"
             android:label="@string/title_activity_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,15 +43,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".IntroActivity"
+            android:name="djaa9.dk.thepage.InMySteps_201270097.IntroActivity"
             android:label="@string/title_activity_intro" >
         </activity>
         <activity
-            android:name=".WalkingActivity"
+            android:name="djaa9.dk.thepage.InMySteps_201270097.WalkingActivity"
             android:label="@string/title_activity_walking" >
         </activity>
         <activity
-            android:name=".WalkDoneActivity"
+            android:name="djaa9.dk.thepage.InMySteps_201270097.WalkDoneActivity"
             android:label="@string/title_activity_walk_done" >
         </activity>
 

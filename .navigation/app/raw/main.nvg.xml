@@ -6,7 +6,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "djaa9.dk.thepage.smap_themeproject.LoginActivity"/>
+        className = "djaa9.dk.thepage.InMySteps_201270097.LoginActivity"/>
       <point      
         x = "-80"      
         y = "484"/>
@@ -14,7 +14,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "djaa9.dk.thepage.smap_themeproject.WalkDoneActivity"/>
+        className = "djaa9.dk.thepage.InMySteps_201270097.WalkDoneActivity"/>
       <point      
         x = "936"      
         y = "556"/>
@@ -22,7 +22,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "djaa9.dk.thepage.smap_themeproject.WalkingActivity"/>
+        className = "djaa9.dk.thepage.InMySteps_201270097.WalkingActivity"/>
       <point      
         x = "1784"      
         y = "440"/>
@@ -30,7 +30,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "djaa9.dk.thepage.smap_themeproject.IntroActivity"/>
+        className = "djaa9.dk.thepage.InMySteps_201270097.IntroActivity"/>
       <point      
         x = "2632"      
         y = "528"/>
